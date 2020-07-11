@@ -20,6 +20,7 @@ class CachedNetworkImageProvider
     this.errorListener,
     this.headers,
     this.cacheManager,
+    this.cacheKey,
     //ignore: avoid_unused_constructor_parameters
     ImageRenderMethodForWeb imageRenderMethodForWeb,
   })  : assert(url != null),
@@ -43,6 +44,10 @@ class CachedNetworkImageProvider
   /// Set headers for the image provider, for example for authentication
   @override
   final Map<String, String> headers;
+
+  /// Lookup key for cacheManager identifying a file on local storage
+  @override
+  final String cacheKey;
 
   @override
   Future<CachedNetworkImageProvider> obtainKey(
@@ -78,7 +83,7 @@ class CachedNetworkImageProvider
     try {
       var mngr = cacheManager ?? DefaultCacheManager();
       await for (var result in mngr.getFileStream(key.url,
-          withProgress: true, headers: headers)) {
+          key: cacheKey ?? key.url, withProgress: true, headers: headers)) {
         if (result is DownloadProgress) {
           chunkEvents.add(ImageChunkEvent(
             cumulativeBytesLoaded: result.downloaded,

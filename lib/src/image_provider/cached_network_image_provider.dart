@@ -33,6 +33,7 @@ abstract class CachedNetworkImageProvider
   const factory CachedNetworkImageProvider(
     String url, {
     double scale,
+    String cacheKey,
     @Deprecated('ErrorListener is deprecated, use listeners on the imagestream')
         ErrorListener errorListener,
     Map<String, String> headers,
@@ -54,6 +55,9 @@ abstract class CachedNetworkImageProvider
 
   /// The scale to place in the [ImageInfo] object of the image.
   double get scale;
+
+  /// Lookup key for cacheManager identifying a file on local storage
+  String get cacheKey;
 
   /// The HTTP headers that will be used to fetch image from network.
   Map<String, String> get headers;

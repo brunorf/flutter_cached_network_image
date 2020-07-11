@@ -22,6 +22,11 @@ class CachedNetworkImage extends StatelessWidget {
   /// The target image that is displayed.
   final String imageUrl;
 
+  /// Lookup key for cacheManager identifying a file on local storage
+  /// 
+  /// If null imageUrl is used instead
+  final String cacheKey;
+
   /// Optional builder to further customize the display of the image.
   final ImageWidgetBuilder imageBuilder;
 
@@ -169,6 +174,7 @@ class CachedNetworkImage extends StatelessWidget {
     this.repeat = ImageRepeat.noRepeat,
     this.matchTextDirection = false,
     this.cacheManager,
+    this.cacheKey,
     this.useOldImageOnUrlChange = false,
     this.color,
     this.filterQuality = FilterQuality.low,
@@ -190,6 +196,7 @@ class CachedNetworkImage extends StatelessWidget {
           imageUrl,
           headers: httpHeaders,
           cacheManager: cacheManager,
+          cacheKey: cacheKey,
           imageRenderMethodForWeb: imageRenderMethodForWeb,
         ),
         super(key: key);

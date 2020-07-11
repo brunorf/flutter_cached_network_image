@@ -23,6 +23,7 @@ class CachedNetworkImageProvider
     this.errorListener,
     this.headers,
     this.cacheManager,
+    this.cacheKey,
     ImageRenderMethodForWeb imageRenderMethodForWeb,
   })  : _imageRenderMethodForWeb =
             imageRenderMethodForWeb ?? ImageRenderMethodForWeb.HtmlImage,
@@ -44,6 +45,10 @@ class CachedNetworkImageProvider
 
   @override
   final Map<String, String> headers;
+
+  /// Lookup key for cacheManager identifying a file on local storage
+  @override
+  final String cacheKey;
 
   final ImageRenderMethodForWeb _imageRenderMethodForWeb;
 
@@ -107,7 +112,7 @@ class CachedNetworkImageProvider
     try {
       var mngr = cacheManager ?? DefaultCacheManager();
       await for (var result in mngr.getFileStream(key.url,
-          withProgress: true, headers: headers)) {
+          key: cacheKey ?? key.url, withProgress: true, headers: headers)) {
         if (result is DownloadProgress) {
           chunkEvents.add(ImageChunkEvent(
             cumulativeBytesLoaded: result.downloaded,
